@@ -6,10 +6,10 @@ if [ -z "$1" ]
     echo -e "Usage:\nwipe-and-clone-pi.sh /dev/disk#\nWhere # is the disk number as shown by diskutil"
     echo "Do you want to run 'diskutil list' to view all names?"
     select yn in "Yes" "No"; do
-      case $yn in
-        Yes ) diskutil list; exit;;
-        No ) exit;;
-      esac
+        case $yn in
+            Yes ) diskutil list; exit;;
+            No ) exit;;
+        esac
     done
 fi
 
@@ -26,21 +26,21 @@ fi
 # Make sure they are sure
 echo -e "\nAre you VERY sure you want to wipe $SDCARD_DISK?"
 select yn in "Yes" "No" "Run 'diskutil list' to view disk names"; do
-  case $yn in
-    Yes ) break;;
-    No ) exit;;
-		"Run 'diskutil list' to view disk names" ) diskutil list; exit;;
-  esac
+    case $yn in
+        Yes ) break;;
+        No ) exit;;
+        "Run 'diskutil list' to view disk names" ) diskutil list; exit;;
+    esac
 done
 
 # Make sure they are very sure
 echo -e "\nVery VERY sure? $SDCARD_DISK will be completely WIPED?"
 select yn in "Yes" "No" "Run 'diskutil list' to view disk names"; do
-  case $yn in
-    Yes ) break;;
-    No ) exit;;
-		"Run 'diskutil list' to view disk names" ) diskutil list; exit;;
-  esac
+    case $yn in
+        Yes ) break;;
+        No ) exit;;
+        "Run 'diskutil list' to view disk names" ) diskutil list; exit;;
+    esac
 done
 
 echo -e "\nOk... This should take about 10 minutes or more.\n\nYou don't get much progress feedback so be patient...\n"
