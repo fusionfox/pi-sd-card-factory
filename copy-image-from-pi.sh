@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Set variable containing relative path to the directory this script is in
+SCRIPTDIR=$(dirname ${BASH_SOURCE[0]})
+
+# If the ./images directory doesn't exist, create it
+if [ ! -d "$SCRIPTDIR/images" ]; then
+  mkdir $SCRIPTDIR/images
+fi
+
 # Check to see if arguments were supplied
 if [ -z "$1" ] || [ -z "$2" ]
   then
@@ -39,7 +47,6 @@ done
 echo -e "\nOk...\n\nYou don't get much progress feedback so be patient...\n"
 
 # Creates an image using the contents of the sd card in the same directory as this script
-PI_IMAGE=$(dirname ${BASH_SOURCE[0]})/images/$IMAGE_FILENAME
-sudo dd if=$SDCARD_DISK of=$PI_IMAGE
+sudo dd if=$SDCARD_DISK of=$SCRIPTDIR/images/$IMAGE_FILENAME
 
-echo -e "\nDone!"
+echo -e "\nContents of $SDCARD_DISK has been saved to $SCRIPTDIR/images/$IMAGE_FILENAME!"

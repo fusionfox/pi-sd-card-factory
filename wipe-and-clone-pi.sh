@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Set variable containing relative path to the directory this script is in
+SCRIPTDIR=$(dirname ${BASH_SOURCE[0]})
+
+# If the ./images directory doesn't exist, quit
+if [ ! -d "$SCRIPTDIR/images" ]; then
+  echo "You need to create the directory $SCRIPTDIR/images which must contain the image you want to copy"
+  exit
+fi
+
 # Check to see if arguments were supplied
 if [ -z "$1" ] || [ -z "$2" ]
   then
@@ -56,7 +65,6 @@ sudo newfs_msdos -F 16 $SDCARD_DISK
 
 # Write the image to the card (about 10 mins)
 SDCARD_RDISK="${SDCARD_DISK/disk/rdisk}"
-PI_IMAGE=$(dirname ${BASH_SOURCE[0]})/images/$IMAGE_FILENAME
-sudo dd if=$PI_IMAGE of=$SDCARD_RDISK bs=5m
+sudo dd if=$SCRIPTDIR/images/$IMAGE_FILENAME of=$SDCARD_RDISK bs=5m
 
-echo -e "\nDone!"
+echo -e "\n$IMAGE_FILENAME has been cloned onto $SDCARD_DISK!"
