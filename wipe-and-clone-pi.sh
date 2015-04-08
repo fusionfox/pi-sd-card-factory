@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Check to see if argument was supplied
-if [ -z "$1" ]
+# Check to see if arguments were supplied
+if [ -z "$1" ] || [ -z "$2" ]
   then
-    echo -e "Usage:\nwipe-and-clone-pi.sh /dev/disk#\nWhere # is the disk number as shown by diskutil"
+    echo -e "Usage:\nwipe-and-clone-pi.sh /dev/disk# image-to-clone.dmg\nWhere # is the disk number as shown by diskutil"
     echo "Do you want to run 'diskutil list' to view all names?"
     select yn in "Yes" "No"; do
         case $yn in
@@ -16,6 +16,9 @@ fi
 # Save the disk name of the SD card (e.g.: /dev/disk1)
 SDCARD_DISK=$1
 
+# Save filename of image to write to card
+IMAGE_FILENAME=$2
+
 # Do not let them wipe primary drive /dev/disk0
 if [ $1 = "/dev/disk0" ]
   then
@@ -24,7 +27,7 @@ if [ $1 = "/dev/disk0" ]
 fi
 
 # Make sure they are sure
-echo -e "\nAre you VERY sure you want to wipe $SDCARD_DISK?"
+echo -e "\nAre you VERY sure you want to wipe $SDCARD_DISK and put $IMAGE_FILENAME on it?"
 select yn in "Yes" "No" "Run 'diskutil list' to view disk names"; do
     case $yn in
         Yes ) break;;
@@ -34,7 +37,7 @@ select yn in "Yes" "No" "Run 'diskutil list' to view disk names"; do
 done
 
 # Make sure they are very sure
-echo -e "\nVery VERY sure? $SDCARD_DISK will be completely WIPED?"
+echo -e "\nVery VERY sure? $SDCARD_DISK will be completely WIPED and replaced with $IMAGE_FILENAME"
 select yn in "Yes" "No" "Run 'diskutil list' to view disk names"; do
     case $yn in
         Yes ) break;;
@@ -52,9 +55,8 @@ diskutil unmountDisk $SDCARD_DISK
 sudo newfs_msdos -F 16 $SDCARD_DISK
 
 # Write the image to the card (about 10 mins)
-# BBC-pi.dmg has to be in the same directory as this script!
 SDCARD_RDISK="${SDCARD_DISK/disk/rdisk}"
-BBC_PI_IMAGE=${BASH_SOURCE[0]/%wipe-and-clone-pi.sh/BBC-pi.dmg}
-sudo dd if=$BBC_PI_IMAGE of=$SDCARD_RDISK bs=5m
+PI_IMAGE=$(dirname ${BASH_SOURCE[0]})/images/$IMAGE_FILENAME
+sudo dd if=$PI_IMAGE of=$SDCARD_RDISK bs=5m
 
 echo -e "\nDone!"
