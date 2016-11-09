@@ -12,7 +12,7 @@ fi
 # Check to see if arguments were supplied
 if [ -z "$1" ] || [ -z "$2" ]
   then
-    echo -e "Usage:\nwipe-and-clone-pi.sh /dev/disk# image-to-clone.dmg\nWhere # is the disk number as shown by diskutil"
+    echo -e "Usage:\nwipe-and-clone-pi.sh /dev/disk# image-to-clone-from-images-folder.dmg\nWhere # is the disk number as shown by diskutil"
     echo "Do you want to run 'diskutil list' to view all names?"
     select yn in "Yes" "No"; do
         case $yn in
