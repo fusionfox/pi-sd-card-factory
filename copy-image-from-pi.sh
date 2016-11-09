@@ -46,6 +46,9 @@ done
 
 echo -e "\nOk...\n\nYou don't get much progress feedback so be patient...\n"
 
+# Make subsequent commands exit immediately if they fail
+set -e
+
 # Creates an image using the contents of the sd card in the same directory as this script
 sudo dd if=$SDCARD_DISK of=$SCRIPTDIR/images/$IMAGE_FILENAME
 

@@ -57,6 +57,9 @@ done
 
 echo -e "\nOk... This should take about 10 minutes or more.\n\nYou don't get much progress feedback so be patient...\n"
 
+# Make subsequent commands exit immediately if they fail
+set -e
+
 # Unmount the disk
 diskutil unmountDisk $SDCARD_DISK
 
